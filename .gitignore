@@ -57,3 +57,6 @@ server.log
 .zscripts/dev.pid
 db/custom.db
 agent-ctx/
+
+# local deliverables (not part of app source)
+/download/
