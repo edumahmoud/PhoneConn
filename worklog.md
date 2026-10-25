@@ -45,3 +45,21 @@ Work Log:
 Stage Summary:
 - الميزة الجديدة تعمل فعلياً على الشبكة الحقيقية (كما يعمل Fing/Nmap -sn) ضمن حدود الاستخدام المصرّح.
 - لقطات توثيقية: download/live-scan-desktop.png و download/live-scan-mobile.png.
+
+---
+Task ID: 3
+Agent: main (Z.ai)
+Task: رفع المشروع على GitHub (طلب المستخدم: "ارفع على جيتهب")
+
+Work Log:
+- تحقق من حالة المستودع: main نظيف، remote origin = https://github.com/edumahmoud/PhoneConn.git، آخر commit لميزة الفحص الحقيقي (08f7e0e).
+- محاولة push مباشرة → فشلت: "could not read Username for 'https://github.com'" (لا توجد بيانات اعتماد).
+- بحث شامل عن بيانات اعتماد (gh CLI، env، .netrc، .ssh، .env، credential helper) → لا شيء متاح في البيئة.
+- إنشاء سكربت scripts/push-github.sh: يستقبل توكن PAT، يضبط remote URL بالتوكن، يعمل push -u origin main، ثم يمسح التوكن من الإعدادات تلقائياً (أمان).
+- إعادة إنشاء أرشيف المصدر download/PhoneConn-source.zip (241KB / 100 ملف) بمصدر التطبيق فقط بعد استبعاد مجلد skills الداخلي والأرشيف القديم (41MB).
+- commit جديد f03f503: تحديث الأرشيف + سكربت الرفع.
+
+Stage Summary:
+- المستودع جاهز 100% للرفع بأمر واحد: bash scripts/push-github.sh <TOKEN>
+- الحائل الوحيد: يحتاج توكن PAT من المستخدم (صلاحية repo / Contents: Read+Write على PhoneConn فقط).
+- بديل متاح فوراً: أرشيف المصدر النظيف في download/PhoneConn-source.zip للرفع اليدوي عبر واجهة GitHub.
