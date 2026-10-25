@@ -11,11 +11,16 @@ import { RouterKB } from "./router-kb";
 import { RouterAudit } from "./router-audit";
 import { RouterEfficiency } from "./router-efficiency";
 import { RouterDirect } from "./router-direct";
+import { NetworkData } from "./network-data";
+import { DeviceScan } from "./device-scan";
+import { DslPanel } from "./dsl-panel";
 import { usePhoneConn } from "@/lib/phoneconn/store";
 import {
   COMMON_GATEWAYS,
   ADMIN_PORTS,
   GATEWAY_GUIDES,
+  ROUTER_BRANDS,
+  brandsForGateway,
   extractPrivateIp,
   guessGateways,
 } from "@/lib/phoneconn/routers";
@@ -54,6 +59,7 @@ export function RouterCenter() {
   const [gatewayError, setGatewayError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [workingUrl, setWorkingUrl] = useState<string | null>(null);
+  const [brandId, setBrandId] = useState<string | null>(null);
   const [guideOpen, setGuideOpen] = useState(false);
   const [lines, setLines] = useState<never[]>([]);
   const pushTerm = useTerminal();
@@ -158,6 +164,8 @@ export function RouterCenter() {
         }
         const w = window.localStorage.getItem("phoneconn-working-url");
         if (w) setWorkingUrl(w);
+        const b = window.localStorage.getItem("phoneconn-brand");
+        if (b) setBrandId(b);
       } catch {
         /* private mode */
       }
@@ -207,6 +215,21 @@ export function RouterCenter() {
     }
   }
 
+  function selectBrand(id: string | null) {
+    setBrandId(id);
+    try {
+      if (id) window.localStorage.setItem("phoneconn-brand", id);
+      else window.localStorage.removeItem("phoneconn-brand");
+    } catch {
+      /* private mode */
+    }
+    const brand = ROUTER_BRANDS.find((x) => x.id === id);
+    if (brand) {
+      pushTerm(setLines, `router type confirmed: ${brand.name}`, "ok");
+      logActivity("الراوتر", `تم تحديد نوع الراوتر: ${brand.name}`, "info");
+    }
+  }
+
   function markWorking(url: string) {
     setWorkingUrl(url);
     try {
@@ -225,6 +248,10 @@ export function RouterCenter() {
       url: `${p.scheme}://${gateway}${p.port ? ":" + p.port : ""}`,
     }));
   }, [gateway]);
+
+  /* شركات مرجحة من عنوان البوابة المختار */
+  const likelyBrands = useMemo(() => brandsForGateway(gateway).slice(0, 6), [gateway]);
+  const confirmedBrand = brandId ? ROUTER_BRANDS.find((b) => b.id === brandId) : null;
 
   return (
     <div className="space-y-6">
@@ -382,6 +409,53 @@ export function RouterCenter() {
                 </Button>
               </div>
             )}
+
+            {/* ---------------- نوع الراوتر ---------------- */}
+            {gateway && (
+              <div className="space-y-2.5 pt-1">
+                <div className="text-xs font-bold text-foreground/90">حدد نوع الراوتر (الشركة) لتخصيص كل التوجيهات في الخطوات التالية:</div>
+                <div className="flex flex-wrap gap-2">
+                  {likelyBrands.map((b) => (
+                    <button
+                      key={b.id}
+                      onClick={() => selectBrand(b.id)}
+                      className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
+                        brandId === b.id
+                          ? "bg-emerald-500/15 border-emerald-500/50 text-emerald-300 font-bold"
+                          : "border-border hover:border-emerald-500/40 hover:text-emerald-300"
+                      }`}
+                    >
+                      {b.name}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <select
+                    value={brandId ?? ""}
+                    onChange={(e) => selectBrand(e.target.value || null)}
+                    className="h-9 rounded-md border border-border bg-black/40 text-xs px-2 terminal max-w-full"
+                    aria-label="اختر شركة الراوتر من القائمة"
+                  >
+                    <option value="">— قائمة كل الشركات ({ROUTER_BRANDS.length}) —</option>
+                    {ROUTER_BRANDS.map((b) => (
+                      <option key={b.id} value={b.id}>{b.name}</option>
+                    ))}
+                  </select>
+                  {confirmedBrand && (
+                    <Badge variant="outline" className="text-[11px] bg-emerald-500/15 text-emerald-300 border-emerald-500/40">
+                      <Check className="w-3 h-3 me-1" />
+                      النوع المعتمد: {confirmedBrand.name}
+                    </Badge>
+                  )}
+                </div>
+                {confirmedBrand && (
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    تم تخصيص أدلة «الأجهزة المتصلة» و«بيانات DSL» والوصول للوحة على موديلات {confirmedBrand.name} —
+                    ويمكنك دائماً مراجعة ملاحظاتها الأمنية في قاعدة المعرفة بالأسفل.
+                  </p>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </section>
@@ -450,10 +524,10 @@ export function RouterCenter() {
                 <Lock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <div className="text-xs leading-relaxed text-foreground/85">
                   <strong>ماذا تفعل داخل اللوحة؟</strong> راجع بالترتيب: قائمة{" "}
-                  <strong>الأجهزة المتصلة</strong> (هل تعرفها كلها؟) ← <strong>كلمة مرور المدير</strong> (غير
+                  <strong>الأجهزة المتصلة</strong> (هل تعرفها كلها؟ سجّلها في الخطوة 4) ← <strong>كلمة مرور المدير</strong> (غير
                   الافتراضية) ← <strong>التشفير</strong> (WPA2/WPA3) ← <strong>WPS</strong> (عطّله) ←{" "}
-                  <strong>الإدارة عن بُعد</strong> (عطّلها) ← <strong>تحديث النظام</strong>. ثم قِس كفاءة الاتصال فعلياً
-                  في «فحص الكفاءة» بالأسفل، واختبر نفسك في «التدقيق الأمني».
+                  <strong>الإدارة عن بُعد</strong> (عطّلها) ← <strong>تحديث النظام</strong>. ثم قِس الكفاءة فعلياً في
+                  «الخطوة 5»، وأدخل بيانات خطك في «الخطوة 6»، واختبر نفسك في «التدقيق الأمني».
                 </div>
               </div>
               <div className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
@@ -470,8 +544,21 @@ export function RouterCenter() {
         )}
       </section>
 
+      {/* ------------------------------ بيانات الشبكة ------------------------------ */}
+      <NetworkData
+        gateway={gateway}
+        localIp={tel.localIps[0] ?? null}
+        connectionType={tel.connectionType ?? tel.effectiveType}
+      />
+
+      {/* ------------------------------ الأجهزة المتصلة ------------------------------ */}
+      <DeviceScan gateway={gateway} brandId={brandId} />
+
       {/* ------------------------------ فحص الكفاءة الفعلي ------------------------------ */}
       <RouterEfficiency />
+
+      {/* ------------------------------ بيانات DSL ------------------------------ */}
+      <DslPanel brandId={brandId} />
 
       {/* ------------------------------ الاتصال المباشر ------------------------------ */}
       <RouterDirect />

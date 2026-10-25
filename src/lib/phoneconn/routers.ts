@@ -361,3 +361,81 @@ export function guessGateways(localIp: string): string[] {
   const base = `${p[0]}.${p[1]}.${p[2]}`;
   return [`${base}.1`, `${base}.254`];
 }
+
+/* ------------------- تحديد نوع الراوتر ومواقع الصفحات ------------------- */
+
+/** شركات مطابقة لعنوان بوابة محدد — الأشهر أولاً */
+export function brandsForGateway(gateway: string): RouterBrand[] {
+  return ROUTER_BRANDS.filter((b) => b.gateways.includes(gateway)).sort(
+    (a, b) => Number(b.popular) - Number(a.popular)
+  );
+}
+
+/** أين أجد قائمة الأجهزة المتصلة وبيانات DSL داخل لوحة كل شركة */
+export const BRAND_PAGE_HINTS: Record<string, { devices: string; dsl: string }> = {
+  tplink: {
+    devices: "Advanced ← Network Map (خريطة الشبكة) أو Attached Devices",
+    dsl: "Advanced ← Status ← DSL Statistics (في مودمات TP-Link)",
+  },
+  huawei: {
+    devices: "Status ← User Devices أو من تطبيق AI Life على الهاتف",
+    dsl: "Status ← WAN Information / xDSL Status (في أجهزة ONT انظر PON)",
+  },
+  zte: {
+    devices: "Status ← User Devices أو Network Map",
+    dsl: "Status ← Network / PON Information في أجهزة الفايبر F660/F670L",
+  },
+  dlink: {
+    devices: "Status ← Client Table أو من الصفحة الرئيسية",
+    dsl: "Status ← DSL Statistics في المودمات (أجهزة الفايبر: PON Status)",
+  },
+  netgear: {
+    devices: "Attached Devices من القائمة الجانبية",
+    dsl: "Status ← Connection Status / DSL Statistics",
+  },
+  linksys: {
+    devices: "Network Map من لوحة Smart Wi-Fi",
+    dsl: "Status ← DSL Status",
+  },
+  asus: {
+    devices: "Network Map — الشاشة الأولى بعد الدخول",
+    dsl: "Network ← ISP Connection ثم Status",
+  },
+  sagemcom: {
+    devices: "My Network / الأجهزة المتصلة من الصفحة الرئيسية",
+    dsl: "Status ← DSL Line Status",
+  },
+  we: {
+    devices: "لوحة الراوتر ← Device Info ← Associated Devices (أو تطبيق MyWE)",
+    dsl: "Device Info ← WAN / DSL Status",
+  },
+  vodafone: {
+    devices: "Device Management ← Connected Devices",
+    dsl: "Status ← Device Info (أجهزة الفايبر: GPON Status)",
+  },
+  etisalat: {
+    devices: "لوحة الجهاز ← Device List أو من تطبيق المزوّد",
+    dsl: "Status ← Network Info",
+  },
+  orange: {
+    devices: "الصفحة الرئيسية ← الأجهزة المتصلة",
+    dsl: "Status ← WAN / DSL Status",
+  },
+  xiaomi: {
+    devices: "تطبيق Mi Home ← جهاز الراوتر ← الأجهزة المتصلة",
+    dsl: "Status ← Network Settings",
+  },
+  tenda: {
+    devices: "Status ← Attached Devices",
+    dsl: "Status ← WAN Status",
+  },
+  mikrotik: {
+    devices: "WebFig ← IP ← ARP List",
+    dsl: "Interfaces ← سطر PPPoE/WAN (.tx/.rx)",
+  },
+};
+
+export const DEFAULT_PAGE_HINTS = {
+  devices: "ابحث عن قائمة بأسماء: Attached Devices / User Devices / Network Map / الأجهزة المتصلة — غالباً تحت Status أو Device Management",
+  dsl: "ابحث عن صفحة Status / Statistics / Device Info — ستجد فيها DSL Status أو WAN Status",
+};

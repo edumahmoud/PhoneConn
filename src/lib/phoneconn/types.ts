@@ -61,3 +61,71 @@ export interface PhoneTelemetry {
   language: string;
   timezone: string;
 }
+
+/* ------------------------- الأجهزة المتصلة بالشبكة ------------------------- */
+
+/** أنواع الأجهزة التي يمكن تصنيف المتصلين بالشبكة إليها */
+export type DeviceType =
+  | "router"
+  | "phone"
+  | "computer"
+  | "tv"
+  | "camera"
+  | "printer"
+  | "iot"
+  | "virtual"
+  | "unknown";
+
+/** جهاز سجّله المستخدم من قائمة الأجهزة في لوحة الراوتر */
+export interface DeviceEntry {
+  id: string;
+  name: string;
+  /** بصيغة XX:XX:XX:XX:XX:XX — فارغ إن لم يتوفر */
+  mac: string;
+  ip: string;
+  type: DeviceType;
+  /** الشركة المصنّعة المستنتجة من MAC (قاعدة OUI) أو ما أدخله المستخدم */
+  vendor: string | null;
+  addedAt: string;
+}
+
+/* ------------------------------- بيانات DSL ------------------------------- */
+
+/** وسيلة الاتصال بالإنترنت في منزلك */
+export type DslMedium = "adsl" | "adsl2plus" | "vdsl2" | "fiber" | "lte";
+
+/** أرقام الخط كما تظهر في صفحة حالة الراوتر */
+export interface DslInput {
+  medium: DslMedium;
+  /** هامش الإشارة بالديسيبل */
+  snr: number | null;
+  /** توهين الخط بالديسيبل */
+  attenuation: number | null;
+  /** سرعة المزامنة الفعلية للموبدم Mbps */
+  syncDown: number | null;
+  syncUp: number | null;
+  /** سرعة الخطة المشتركة Mbps — لقياس الاستغلال */
+  planDown: number | null;
+}
+
+/** حكم ملوّن على قيمة مقاسة */
+export interface Verdict {
+  label: string;
+  cls: string;
+  score: number;
+}
+
+/** نتيجة تقييم كاملة لبيانات الخط */
+export interface DslEvaluation {
+  snrVerdict: Verdict | null;
+  attVerdict: Verdict | null;
+  syncVerdict: Verdict | null;
+  /** أقصى سرعة تقديرية يتحملها الخط Mbps */
+  estMaxRate: number | null;
+  /** طول الخط النحاسي التقديري كم */
+  estLineKm: number | null;
+  /** نسبة استغلال الخطة 0..1 */
+  utilization: number | null;
+  health: { score: number; label: string; cls: string };
+  tips: string[];
+}

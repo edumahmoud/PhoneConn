@@ -114,7 +114,7 @@ export function RouterEfficiency() {
     <section id="efficiency" className="scroll-mt-20">
       <SectionHeader
         icon={<Gauge className="w-5 h-5" />}
-        title="الخطوة 3 — فحص كفاءة اتصالك فعلياً"
+        title="الخطوة 5 — فحص كفاءة اتصالك فعلياً"
         subtitle="قياسات حقيقية تمر عبر راوترك: الاستجابة، الاهتزاز، الفقد، السرعات، وازدحام المخازن"
         actions={
           <Button onClick={run} disabled={running} className="font-bold">

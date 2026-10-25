@@ -63,7 +63,7 @@ export function RouterDirect() {
     <section id="direct" className="scroll-mt-20">
       <SectionHeader
         icon={<Cable className="w-5 h-5" />}
-        title="الخطوة 4 — الاتصال المباشر بالراوتر (وضع محلي)"
+        title="الخطوة 7 — الاتصال المباشر بالراوتر (وضع محلي)"
         subtitle="ping حقيقي + فحص منافذ + قراءة لوحة الإدارة — يتصل بالراوتر الذي يصل إليه الخادم"
         actions={
           <Button onClick={probe} disabled={loading} className="font-bold">
