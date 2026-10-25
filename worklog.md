@@ -63,3 +63,21 @@ Stage Summary:
 - المستودع جاهز 100% للرفع بأمر واحد: bash scripts/push-github.sh <TOKEN>
 - الحائل الوحيد: يحتاج توكن PAT من المستخدم (صلاحية repo / Contents: Read+Write على PhoneConn فقط).
 - بديل متاح فوراً: أرشيف المصدر النظيف في download/PhoneConn-source.zip للرفع اليدوي عبر واجهة GitHub.
+
+---
+Task ID: 4
+Agent: main (Z.ai)
+Task: تنفيذ الرفع الفعلي إلى GitHub باستخدام توكن PAT من المستخدم
+
+Work Log:
+- استلام توكن PAT من المستخدم وتنفيذ scripts/push-github.sh → نجح الرفع الأولي (main → origin).
+- رصد تحذير GitHub: نسختان قديمتان من download/PhoneConn-source.zip في التاريخ (80.3MB + 40.1MB).
+- تنظيف شامل: إزالة download/ من كل تاريخ المستودع عبر git filter-branch + إضافة /download/ إلى .gitignore + git gc --prune=now --aggressive.
+- النتيجة: حجم المستودع انخفض من ~120MB إلى 252KB، صفر blobs كبيرة، صفر ملفات download متتبعة.
+- force push للتاريخ النظيف (60a4573) + مسح التوكن من remote URL مجدداً.
+- تحقق نهائي: git ls-remote يؤكد HEAD = 60a4573، صفحة GitHub تعرض كل ملفات المصدر (src/prisma/public/README...)، .env المرفوع يحتوي مسار sqlite محلي فقط (لا أسرار)، والتطبيق يعمل محلياً (HTTP 200، API الفحص يعمل).
+
+Stage Summary:
+- المستودع مباشر على https://github.com/edumahmoud/PhoneConn بتاريخ نظيف ووزن 252KB.
+- توصية أمنية للمستخدم: إلغاء التوكن (Revoke) من GitHub لأنه تم مشاركته في المحادثة.
+- أرشيف المصدر النظيف يبقى متاحاً محلياً في download/PhoneConn-source.zip (غير مرفوع على GitHub عمداً).
