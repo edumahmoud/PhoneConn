@@ -10,17 +10,6 @@ interface PhoneConnStore {
   activity: ActivityEntry[];
   logActivity: (section: string, action: string, severity: Severity) => void;
   clearActivity: () => void;
-
-  quizScore: number | null;
-  quizTotal: number;
-  setQuizScore: (score: number, total: number) => void;
-
-  auditCompleted: boolean;
-  auditExposedCount: number;
-  setAuditResult: (exposedCount: number) => void;
-
-  networksScanned: number;
-  setNetworksScanned: (n: number) => void;
 }
 
 function nowStamp(): string {
@@ -48,19 +37,7 @@ export const usePhoneConn = create<PhoneConnStore>((set) => ({
           severity,
         },
         ...s.activity,
-      ].slice(0, 200),
+      ].slice(0, 120),
     })),
   clearActivity: () => set({ activity: [] }),
-
-  quizScore: null,
-  quizTotal: 0,
-  setQuizScore: (score, total) => set({ quizScore: score, quizTotal: total }),
-
-  auditCompleted: false,
-  auditExposedCount: 0,
-  setAuditResult: (exposedCount) =>
-    set({ auditCompleted: true, auditExposedCount: exposedCount }),
-
-  networksScanned: 0,
-  setNetworksScanned: (n) => set({ networksScanned: n }),
 }));
