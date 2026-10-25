@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { TopBar, Sidebar, Footer, EthicsGate } from "@/components/phoneconn/chrome";
 import { Dashboard } from "@/components/phoneconn/dashboard";
+import { LiveScan } from "@/components/phoneconn/live-scan";
 import { WifiLab } from "@/components/phoneconn/wifi-lab";
 import { DeviceLab } from "@/components/phoneconn/device-lab";
 import { SelfAudit } from "@/components/phoneconn/self-audit";
@@ -22,6 +23,7 @@ export default function Home() {
         <main className="flex-1 min-w-0 p-4 md:p-6 max-w-[1500px] mx-auto w-full">
           <div className={section === "dashboard" ? "" : "fadeup"}>
             {section === "dashboard" && <Dashboard onNavigate={setSection} />}
+            {section === "live" && <LiveScan />}
             {section === "wifi" && <WifiLab />}
             {section === "devices" && <DeviceLab />}
             {section === "audit" && <SelfAudit />}

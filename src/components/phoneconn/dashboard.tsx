@@ -16,6 +16,7 @@ import {
 
 const ICONS: Record<string, React.ReactNode> = {
   dashboard: <LayoutDashboard className="w-4 h-4" />,
+  live: <Radar className="w-4 h-4" />,
   wifi: <Wifi className="w-4 h-4" />,
   devices: <Smartphone className="w-4 h-4" />,
   audit: <Fingerprint className="w-4 h-4" />,
@@ -51,13 +52,18 @@ export function Dashboard({ onNavigate }: { onNavigate: (id: SectionId) => void 
           </h1>
           <p className="text-sm text-muted-foreground leading-relaxed mt-3 max-w-2xl">
             مختبر افتراضي متكامل يحاكي شبكات واي فاي وأجهزة أندرويد وiOS بمواردها (كاميرا، شاشة، ملفات، ميكروفون)
-            بأزرار اختبار احترافية وشاشات حية — كل شيء يحدث داخل متصفحك ولا يلمس أي جهاز حقيقي. الوحدة الحقيقية الوحيدة
-            هي <strong className="text-foreground">التدقيق الذاتي</strong> التي تكشف لك بموافقتك ماذا يرى أي موقع عن جهازك أنت.
+            بأزرار اختبار احترافية وشاشات حية — كل شيء يحدث داخل متصفحك ولا يلمس أي جهاز حقيقي. الوحدات الحقيقية
+            هي <strong className="text-foreground">فحص الشبكة الحقيقي</strong> الذي يكتشف الأجهزة المتصلة بشبكتك فعلياً،
+            و<strong className="text-foreground">التدقيق الذاتي</strong> الذي يكشف بموافقتك ماذا يرى أي موقع عن جهازك أنت.
           </p>
           <div className="flex flex-wrap gap-2 mt-5">
-            <Button onClick={() => onNavigate("wifi")} className="h-11 font-bold">
+            <Button onClick={() => onNavigate("live")} className="h-11 font-bold">
               <Radar className="w-4 h-4 me-2" />
-              ابدأ من مختبر الشبكات
+              افحص شبكتك الحقيقية الآن
+            </Button>
+            <Button variant="outline" onClick={() => onNavigate("wifi")} className="h-11 font-bold">
+              <Radar className="w-4 h-4 me-2" />
+              مختبر الشبكات (محاكاة)
             </Button>
             <Button variant="outline" onClick={() => onNavigate("audit")} className="h-11 font-bold">
               <Fingerprint className="w-4 h-4 me-2" />
@@ -122,11 +128,12 @@ export function Dashboard({ onNavigate }: { onNavigate: (id: SectionId) => void 
           <CardContent>
             <ol className="space-y-2.5 text-xs leading-relaxed">
               {[
-                ["1", "افحص", "شغّل الفحص في مختبر الشبكات لتكتشف الشبكات الافتراضية الست ببروتوكولاتها المختلفة (WEP/WPA/WPA2/WPA3/Open)."],
-                ["2", "جرّب", "نفذ سيناريوهات التقاط المصافحة وهجوم القاموس وإلغاء المصادقة على الأجهزة الافتراضية المتصلة."],
-                ["3", "اختبر الأجهزة", "انتقل لمختبر الأجهزة وشاهد شاشة الهاتف الافتراضي أثناء سيناريوهات التصيّد والتطبيقات الخبيثة والوصول للموارد."],
-                ["4", "افحص نفسك", "شغّل التدقيق الذاتي الحقيقي لترى بصمتك الرقمية بعينك — هذا أهم درس في المنصة."],
-                ["5", "تعلم وقيّم", "اقرأ الدروس، اختبر وعيك بالكويز، ثم استخرج تقرير جلستك وقارنه قبل/بعد."],
+                ["1", "افحص شبكتك الحقيقية", "شغّل فحص الشبكة الحقيقي ليكتشف الخادم الأجهزة المتصلة فعلياً بشبكتك: IP، MAC، الشركة المصنّعة، النوع والمنافذ المفتوحة."],
+                ["2", "افحص", "شغّل الفحص في مختبر الشبكات لتكتشف الشبكات الافتراضية الست ببروتوكولاتها المختلفة (WEP/WPA/WPA2/WPA3/Open)."],
+                ["3", "جرّب", "نفذ سيناريوهات التقاط المصافحة وهجوم القاموس وإلغاء المصادقة على الأجهزة الافتراضية المتصلة."],
+                ["4", "اختبر الأجهزة", "انتقل لمختبر الأجهزة وشاهد شاشة الهاتف الافتراضي أثناء سيناريوهات التصيّد والتطبيقات الخبيثة والوصول للموارد."],
+                ["5", "افحص نفسك", "شغّل التدقيق الذاتي الحقيقي لترى بصمتك الرقمية بعينك — هذا أهم درس في المنصة."],
+                ["6", "تعلم وقيّم", "اقرأ الدروس، اختبر وعيك بالكويز، ثم استخرج تقرير جلستك وقارنه قبل/بعد."],
               ].map(([n, t, d]) => (
                 <li key={n} className="flex gap-3">
                   <span className="w-6 h-6 rounded-md bg-primary/15 border border-primary/30 text-primary text-[11px] font-bold flex items-center justify-center shrink-0">

@@ -8,11 +8,12 @@ import { usePhoneConn } from "@/lib/phoneconn/store";
 import type { SectionId } from "./section-types";
 import {
   ShieldCheck, Wifi, Smartphone, Fingerprint, GraduationCap,
-  FileText, LayoutDashboard, TriangleAlert, TerminalSquare,
+  FileText, LayoutDashboard, TriangleAlert, TerminalSquare, Radar,
 } from "lucide-react";
 
 export const NAV_ITEMS: { id: SectionId; label: string; icon: React.ReactNode; desc: string }[] = [
   { id: "dashboard", label: "لوحة القيادة", icon: <LayoutDashboard className="w-4 h-4" />, desc: "نظرة عامة على المختبر" },
+  { id: "live", label: "فحص الشبكة الحقيقي", icon: <Radar className="w-4 h-4" />, desc: "اكتشف الأجهزة المتصلة بشبكتك فعلياً (ARP + Ping)" },
   { id: "wifi", label: "مختبر الشبكات", icon: <Wifi className="w-4 h-4" />, desc: "فحص شبكات افتراضية وتحليل تشفيرها" },
   { id: "devices", label: "مختبر الأجهزة", icon: <Smartphone className="w-4 h-4" />, desc: "أندرويد وiOS افتراضية ومواردها" },
   { id: "audit", label: "التدقيق الذاتي", icon: <Fingerprint className="w-4 h-4" />, desc: "ماذا يرى أي موقع عن جهازك؟ (حقيقي)" },
@@ -39,7 +40,7 @@ export function TopBar({ current }: { current: SectionId }) {
         <div className="hidden md:flex items-center gap-2">
           <Badge variant="outline" className="bg-amber-500/10 text-amber-300 border-amber-500/40 text-[10px]">
             <TriangleAlert className="w-3 h-3 me-1" />
-            بيئة محاكاة معزولة — لا أجهزة حقيقية
+            مختبرات محاكاة + فحص شبكة محلي حقيقي
           </Badge>
           <Badge variant="outline" className="bg-emerald-500/10 text-emerald-300 border-emerald-500/40 text-[10px]">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-rec me-1.5" />
@@ -93,8 +94,8 @@ export function Sidebar({
           <div className="mt-4 rounded-lg border border-amber-500/25 bg-amber-500/5 p-3">
             <div className="text-[10px] font-bold text-amber-300 mb-1">ميثاق الاستخدام</div>
             <p className="text-[10px] text-amber-100/70 leading-relaxed">
-              استخدم هذه المنصة للتعلم والتدريب والتوعية فقط. اختبار أي جهاز أو شبكة حقيقية دون تصريح مكتوب
-              يخالف القانون في معظم الدول.
+              استخدم هذه المنصة للتعلم والتدريب والتوعية فقط. الفحص الحقيقي مخصص لشبكتك الخاصة أو شبكة مصرح لك
+              باختبارها، واختبار أي جهاز أو شبكة دون تصريح مكتوب يخالف القانون في معظم الدول.
             </p>
           </div>
         </nav>
@@ -128,8 +129,8 @@ export function Footer() {
     <footer className="mt-auto border-t border-border/60 bg-sidebar/30 print:hidden">
       <div className="px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
         <p className="text-[11px] text-muted-foreground text-center sm:text-start leading-relaxed">
-          <strong className="text-foreground/80">PhoneConn EduLab</strong> — منصة تعليمية محاكاة لنشر الوعي والثقافة الأمنية.
-          جميع الشبكات والأجهزة داخلها افتراضية بالكامل.
+          <strong className="text-foreground/80">PhoneConn EduLab</strong> — منصة تعليمية لنشر الوعي والثقافة الأمنية.
+          المختبرات داخلها محاكاة افتراضية بالكامل، وفحص الشبكة الحقيقي يعمل فقط على الشبكة التي يتصل بها الخادم.
         </p>
         <p className="text-[10px] text-muted-foreground">
           اختبار أنظمة حقيقية دون تصريح = مخالفة قانونية · التعلم هنا آمن

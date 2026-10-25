@@ -203,3 +203,20 @@
 .fadeup {
   animation: fadeup 0.3s ease-out both;
 }
+
+/* Live scan progress shimmer (direction-agnostic) */
+.scan-progress {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.93 0.005 165 / 45%) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: scan-shimmer 1.4s linear infinite;
+}
+@keyframes scan-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
