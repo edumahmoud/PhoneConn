@@ -9,6 +9,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { SectionHeader, Terminal, useTerminal } from "./shared";
 import { RouterKB } from "./router-kb";
 import { RouterAudit } from "./router-audit";
+import { RouterEfficiency } from "./router-efficiency";
+import { RouterDirect } from "./router-direct";
 import { usePhoneConn } from "@/lib/phoneconn/store";
 import {
   COMMON_GATEWAYS,
@@ -450,8 +452,8 @@ export function RouterCenter() {
                   <strong>ماذا تفعل داخل اللوحة؟</strong> راجع بالترتيب: قائمة{" "}
                   <strong>الأجهزة المتصلة</strong> (هل تعرفها كلها؟) ← <strong>كلمة مرور المدير</strong> (غير
                   الافتراضية) ← <strong>التشفير</strong> (WPA2/WPA3) ← <strong>WPS</strong> (عطّله) ←{" "}
-                  <strong>الإدارة عن بُعد</strong> (عطّلها) ← <strong>تحديث النظام</strong>. ثم اختبر نفسك في
-                  التدقيق الأمني بالأسفل.
+                  <strong>الإدارة عن بُعد</strong> (عطّلها) ← <strong>تحديث النظام</strong>. ثم قِس كفاءة الاتصال فعلياً
+                  في «فحص الكفاءة» بالأسفل، واختبر نفسك في «التدقيق الأمني».
                 </div>
               </div>
               <div className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
@@ -467,6 +469,12 @@ export function RouterCenter() {
           </div>
         )}
       </section>
+
+      {/* ------------------------------ فحص الكفاءة الفعلي ------------------------------ */}
+      <RouterEfficiency />
+
+      {/* ------------------------------ الاتصال المباشر ------------------------------ */}
+      <RouterDirect />
 
       {/* ------------------------------ قاعدة معرفة الشركات ------------------------------ */}
       <RouterKB onSelectGateway={persistGateway} />

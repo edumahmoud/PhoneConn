@@ -112,7 +112,7 @@ export function RouterAudit() {
     <section id="audit" className="scroll-mt-20">
       <SectionHeader
         icon={<ListChecks className="w-5 h-5" />}
-        title="الخطوة 4 — التدقيق الأمني لراوترك"
+        title="التدقيق الأمني لراوترك"
         subtitle="راجع إعدادات راوترك بنداً بنداً واحصل على درجة أمان شبكتك المنزلية"
         actions={
           <div className="flex gap-2 print:hidden">

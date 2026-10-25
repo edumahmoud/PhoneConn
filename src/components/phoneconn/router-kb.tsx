@@ -24,7 +24,7 @@ export function RouterKB({ onSelectGateway }: { onSelectGateway: (ip: string) =>
     <section id="brands" className="scroll-mt-20">
       <SectionHeader
         icon={<BookOpen className="w-5 h-5" />}
-        title="خطوة 3 — قاعدة معرفة المصنّعين"
+        title="قاعدة معرفة المصنّعين"
         subtitle="عناوين الدخول وبيانات المصنع العامة لكل شركة — من أدلة الاستخدام الرسمية"
       />
 

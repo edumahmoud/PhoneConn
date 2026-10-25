@@ -3,7 +3,7 @@
 import { TopBar, Footer, EthicsGate } from "@/components/phoneconn/chrome";
 import { RouterCenter } from "@/components/phoneconn/router-center";
 import { Badge } from "@/components/ui/badge";
-import { Router, Wifi, ShieldCheck, ListChecks, BookOpen } from "lucide-react";
+import { Router, Wifi, ShieldCheck, ListChecks, BookOpen, Gauge } from "lucide-react";
 
 export default function Home() {
   return (
@@ -26,8 +26,9 @@ export default function Home() {
                   تواصل مع <span className="text-primary">راوتر شبكتك الحقيقي</span>
                 </h1>
                 <p className="text-sm text-muted-foreground mt-2 max-w-2xl leading-relaxed">
-                  حدد عنوان راوترك، افتح لوحة التحكم بضغطة من هاتفك، اعرف بيانات المصنّع ونصائح أمنه، ثم اختبر
-                  أمان شبكتك المنزلية بتدقيق تفاعلي من 10 بنود — كل ذلك بينك وبين راوترك مباشرة.
+                  حدد عنوان راوترك، افتح لوحة التحكم بضغطة من هاتفك، ثم <span className="text-foreground font-bold">قِس
+                  كفاءة اتصالك بقياسات حقيقية</span> (استجابة، اهتزاز، فقد، سرعات، ازدحام مخازن) — وحدد أمان شبكتك
+                  المنزلية بتدقيق تفاعلي من 10 بنود. كل شيء يبقى بينك وبين راوترك.
                 </p>
               </div>
               <div className="hidden md:flex w-16 h-16 rounded-2xl bg-primary/10 border border-primary/40 items-center justify-center shrink-0">
@@ -46,6 +47,10 @@ export default function Home() {
               <Badge variant="outline" className="text-[10px] bg-zinc-500/10 text-zinc-300 border-zinc-500/40">
                 <ListChecks className="w-3 h-3 me-1" />
                 تدقيق أمني بدرجة 100
+              </Badge>
+              <Badge variant="outline" className="text-[10px] bg-zinc-500/10 text-zinc-300 border-zinc-500/40">
+                <Gauge className="w-3 h-3 me-1" />
+                قياس كفاءة فعلي (سرعة/استجابة/ازدحام)
               </Badge>
               <Badge variant="outline" className="text-[10px] bg-zinc-500/10 text-zinc-300 border-zinc-500/40">
                 <ShieldCheck className="w-3 h-3 me-1" />
